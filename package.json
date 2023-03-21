@@ -1,0 +1,18 @@
+{
+  "name": "combo-box",
+  "version": "0.0.1",
+  "description": "Combobox - Lit Component",
+  "main": "combo-box.js",
+  "scripts": {
+    "dev": "web-dev-server --node-resolve --app-index examples/index.html --watch --open",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "@cicciosgamino",
+  "license": "ISC",
+  "dependencies": {
+    "lit": "*"
+  },
+  "directories": {
+    "example": "examples"
+  }
+}
