@@ -1,6 +1,6 @@
 {
   "name": "combo-box",
-  "version": "0.0.1",
+  "version": "0.3.0",
   "description": "Combobox - Lit Component",
   "main": "combo-box.js",
   "scripts": {

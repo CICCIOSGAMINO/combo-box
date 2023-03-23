@@ -2,7 +2,7 @@ ComboBox & Lit
 ==============
 [TOC]
 
-v0.1.0 - 23-03-2023
+v0.3.0 - 23-03-2023
 
 Combobox lit customElement. Combobox is a composite widget that combines a named input field with a popup providing possible values for that input field.
 
@@ -14,7 +14,6 @@ PS: This version is without an input field. The input field can be bound in the 
 <input id="prefix" type="text" name="prefix" value="${this.value}" />
 <combo-box @change=${handleChange}>
 ```
-
 
 ## A11y
 https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/
