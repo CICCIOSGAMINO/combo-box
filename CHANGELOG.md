@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] - 22-03-2023
+
+### Add
+	- flags.js v0.0.1
+	- dispatch change event when selected new option
+	- add CSS custom properties
+
+### Changed
+	- fix UI issues
+	- fix default values
+
 ## [0.0.1] - 21-03-2023
 
 ### Add

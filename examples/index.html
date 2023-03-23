@@ -60,43 +60,17 @@
       }
 
       body  {
-        min-block-size: 100%;
+        height: 100vh;
         padding: 5rem;
         
         font-family: system-ui, sans-serif;
         font-size: 1.9rem;
         /* WCAG no less than 1.5 dyslexic */
         line-height: 1.5;
-
+      
         display: grid;
         place-content: center;
         gap: 5rem;
-      }
-
-      main {
-        min-inline-size: 50%;
-        min-block-size: 50%;
-
-        background-color: whitesmoke;
-      }
-
-      :is(header, main, footer) p:hover {
-        cursor: pointer;
-        color: yellowgreen;
-      }
-
-      .box {
-        width: min(50%, 500px);
-        height: max(10%, 100px);
-
-        background-color: yellowgreen;
-      }
-
-      /* @media (--motionOk) { */
-      @media (prefers-reduced-motion: no-preference) {
-        .sun {
-          transition: transform .5s var(--ease-elastic-3);
-        }
       }
       
     </style>
@@ -105,24 +79,14 @@
 
   <body>
 
-    <header>
-      <h1>🍱 ComboBox</h1>
-    </header>
-
-    <main>
+    <lite-app></lite-app>
       
-      <combo-box
-        label="Prefix">
-      </combo-box>
-
-    </main>
-
     <noscript>
       Please enable JavaScript to view this website.
     </noscript>
 
     <!-- Import Js Module -->
-    <script type="module" src="../combo-box.js">
+    <script type="module" src="../lite-app.js">
 
       window.addEventListener('DOMContentLoaded', (e) => {
         console.log('@DOM >> Ready')

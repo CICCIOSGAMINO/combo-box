@@ -11,13 +11,14 @@ import {
     getUpdatedIndex
 } from './utils.js'
 
-export const ABW = svg`
-<?xml version="1.0" encoding="utf-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 27 18">
-<path fill="#418fde" d="M0,0h27v18H0V0z"/>
-<path fill="#ffd100" d="M0,12h27v1H0v1h27v1H0V12z"/>
-<polygon fill="#EF3340" stroke="#FFF" stroke-width="0.2" stroke-miterlimit="10" points="4.625,3.375 4,1.349609 3.375,3.375 1.349609,4 3.375,4.625 4,6.650391 4.625,4.625 6.650391,4"/>
-</svg>`
+import {
+    VNM,
+    JOR,
+    ISL,
+    CAN,
+    MTQ,
+    SWZ
+} from './flags.js'
 
 export class ComboBox extends LitElement {
 
@@ -28,30 +29,80 @@ export class ComboBox extends LitElement {
         return css`
 
             :host {
-                --combo-height: 7.1rem;;
-                --option-height: 3.1rem;
+                /* CSS Custom vars
+                --combo-label-font-size: 2.3rem;
+                --combo-height: 7.1rem;
+                --combo-col: fit-content(100%) auto;    grid columns layout combobox
+                --combo-font-size: 3rem;
+                --combo-border: none;
+                --combo-bk-color: white;
+                --combo-list-max-height: 35rem;     max list with options height
+                --combo-list-padding: .5rem;        padding list and options
+                --combo-option-col: 1fr 3fr;        grid columns layout option
+                --combo-option-height: 3.1rem;      set the flag height > width as consequence
+                --combo-option-font-size: 1.5rem;
+                 */
+
+                /* main feature to set the combo width
+                    --combo-col: fit-content(100%) 233px;
+                    --combo-col: 199px 273px;
+                    */
 
                 display: block;
+            }
+
+            .combo-label {
+                margin-bottom: .5rem;
+                display: block;
+
+                font-size: var(--combo-label-font-size, 2.3rem);
             }
 
             .combo {
                 display: block;
-                position: relative;                
-                background-color: red;
+                position: relative;              
             }
 
             #combobox {
+                display: inline-block;
                 line-height: 0;
+
+                border: var(--combo-border, 2px solid #333);
+                border-radius: 3px;
+
+                background-color: var(--combo-bk-color, #fff);
             }
 
-            #combobox svg {
+            #combobox:focus {
+                border-color: #0067b8;
+                box-shadow: 0 0 4px 2px #0067b8;
+                outline: 4px solid transparent;
+            }
+
+            /* combobox content eg. selected option */
+            .combobox-content {
+                display: grid;
+                grid-template-columns: var(--combo-col, fit-content(100%) auto);
+                justify-items: center;
+                align-items: center;
+            }
+
+            .combobox-content svg {
+                justify-self: start;
                 width: auto;
-                height: var(--combo-height);
+                height: var(--combo-height, 7rem);
+            }
+
+            .combobox-content span {
+                font-size: var(--combo-font-size, 3rem);
             }
 
             /* combobox list */
             .combobox-list {
-                max-height: 355px;
+                box-sizing: border-box;
+                padding: var(--combo-list-padding, 1rem);
+                width: 100%;  /* with same of the combobox */
+                max-height: var(--combo-list-max-height, 35rem);
                 display: none;
 
                 position: absolute;
@@ -60,22 +111,28 @@ export class ComboBox extends LitElement {
 
                 overflow-y: auto;
 
-                background-color: gold;
+                border: var(--combo-border, 2px solid #333);
+                border-radius: 3px;
+
+                background-color: var(--combo-bk-color, #fff);
             }
 
             .open .combobox-list {
-                display: block;
+                display: inline-block;
             }
 
             /* options in the list */
             .option {
+                padding: var(--combo-list-padding, 1rem);
                 display: grid;
-                grid-template-columns: 1fr 5fr;
+                /* the size of image in the grid layout fix the width / height
+                   of all option > combobox-list width / heigth */
+                grid-template-columns: var(--combo-option-col, fit-content(100%) auto);
                 gap: 1.7rem;
             }
 
             .option:hover {
-                background-color: purple;
+                background-color: pink;
             }
 
             .current.option {
@@ -83,12 +140,12 @@ export class ComboBox extends LitElement {
             }
 
             .option span {
-                
+                font-size: var(--combo-option-font-size, 1.9rem);
             }
 
             .option svg {
                 width: auto;
-                height: var(--option-height);
+                height: var(--combo-option-height, 3.1rem);
             }
 
         `
@@ -115,18 +172,19 @@ export class ComboBox extends LitElement {
     constructor () {
         super()
         this.open = false
+        this.label = ''
         this.selected = 0
         this.searchString = ''
         this.searchTimeout = null
 
-
-        // @DEBUG
+        // @DEFAULT options
         this.options = [
-            { id: 'x1', name: 'ONE', img: ABW },
-            { id: 'x2', name: 'TWO', img: ABW },
-            { id: 'x3', name: 'THREE', img: ABW },
-            { id: 'x4', name: 'FOUR', img: ABW },
-            { id: 'x5', name: 'FIVE', img: ABW }
+            { id: 0, name: 'Viet Nam', img: VNM },
+            { id: 1, name: 'Jordan', img: JOR },
+            { id: 2, name: 'Island', img: ISL },
+            { id: 3, name: 'Canada', img: CAN },
+            { id: 4, name: 'Martinique', img: MTQ },
+            { id: 5, name: 'Eswatini', img: SWZ }
         ]
     }
 
@@ -138,6 +196,8 @@ export class ComboBox extends LitElement {
 
         this.combobox =
             this.renderRoot.getElementById('combobox')
+
+        this.selectOption(this.selected)
     }
     
     updateMenuState (open, callFocus = true) {
@@ -278,7 +338,7 @@ export class ComboBox extends LitElement {
         const firstMatch = this.filterOptions(options, 'name', filter)[0]
 
         // @DEBUG
-        console.log('@FIRST-MATCH >> ', firstMatch)
+        // console.log('@FIRST-MATCH >> ', firstMatch)
 
         const allSameLetter = (array) =>
             array.every((letter) => letter === array[0])
@@ -315,8 +375,21 @@ export class ComboBox extends LitElement {
     }
 
     selectOption (index) {
+
         // update state
         this.selected = index
+
+        // fire the customEvent
+        const selectedEvent =
+            new CustomEvent('change', {
+                bubbles: true,
+                composed: true,
+                detail: {
+                    index
+                }
+            })
+
+        this.dispatchEvent(selectedEvent)
     }
 
     handleOptionClick (e) {
@@ -360,15 +433,18 @@ export class ComboBox extends LitElement {
     }
 
     // render the item for the combobox
-    comboboxTemplate (option = undefined) {
-        
+    comboboxTemplate () {
+        const option = this.options[this.selected]
+
         return option ?
             html`
-                ${option.img} ${option.name}
-            ` :
-            html`
-                ${this.options[0].img} ${this.options[0].name}
-            `
+                <div class="combobox-content">
+                    ${option.img}
+                    
+                    <span>${option.name}</span>
+                </div>
+            ` : null
+
     }
 
     /**
@@ -404,11 +480,13 @@ export class ComboBox extends LitElement {
 
     render () {
         return html`
-            <!-- TODO -->
+            <!-- TODO REMOVE (or FIX) -->
             <span>${this.searchString}</span>
 
             <label id="combo-label" class="combo-label">${this.label}</label>
-            <div id="combo" class="combo">
+            <div
+                id="combo"
+                class="combo">
 
                 <div
                     id="combobox"
@@ -422,7 +500,7 @@ export class ComboBox extends LitElement {
                     aria-haspopup="listbox"
                     aria-labelledby="combo-label">
 
-                    ${this.comboboxTemplate(this.options[this.selected])}
+                    ${this.comboboxTemplate()}
                 </div>
 
                 <div
