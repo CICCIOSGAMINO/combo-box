@@ -31,12 +31,15 @@ export class LiteApp extends LitElement {
                 type: String,
                 state: true,
                 attribute: false
-            }
+            },
+            disabled: Boolean
         }
     }
 
     constructor () {
         super()
+
+        this.disabled = false
 
         this.options = [
             { id: '1', name: 'Vatican State', img: VAT },
@@ -59,10 +62,20 @@ export class LiteApp extends LitElement {
         this.detail = JSON.stringify(e.detail)
     }
 
+    handleClick (e) {
+        this.disabled = !this.disabled
+    }
+
     render () {
         return html`
+            <button
+                @click=${this.handleClick}>
+                Disable / Enable
+            </button>
+
             <combo-box
                 label="Nationality"
+                .disabled=${this.disabled}
                 .options=${this.options}
                 @change=${this.handleSelected}>
             </combo-box>

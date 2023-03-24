@@ -2,7 +2,7 @@ ComboBox & Lit
 ==============
 [TOC]
 
-v0.3.0 - 23-03-2023
+v0.7.0 - 24-03-2023
 
 Combobox lit customElement. Combobox is a composite widget that combines a named input field with a popup providing possible values for that input field.
 
@@ -23,9 +23,10 @@ https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/
 ### 📒 Properties/Attributes
 
 | Name | Type | Default | Description
-| ------------- | ------------- | ---------- | ----------------------------------------
-| label     | String | `''` | Meta LONG_LIVE_TOKEN
-| options   | Array  | `[{...}, {...} ...]` | Default options {id: '', name:'', img:''}
+| --------- | ------ | -------------------- | ----------------------------------------
+| label     | String | `''`                 | Label - ATTRIBUTE / PROPERTY
+| options   | Array  | `[{...}, {...} ...]` | Default options {id: '', name:'', img:''} - PROPERTY
+| disabled  | Boolean| `false`              | To disable the combo-box if needed - PROPERTY
 
 ### Methods
 
@@ -49,6 +50,7 @@ No Methods
 | `--combo-bk-color`           | `white`  | Combobox / List background-color
 | `--combo-list-max-height`    | `35rem`  | Max List of options height
 | `--combo-list-padding`       | `.5rem`  | List / Options Padding
+| `--combo-list-width`         | `100%`   | Set the list width then set --combo-option-col
 | `--combo-option-col`     | `1fr 3fr;`   | Grid columns layout Option
 | `--combo-option-height`      | `3.1rem` | Set the img height > width as consequence (ratio respected)
 | `--combo-option-font-size`   | `1.5rem` | Option font-size

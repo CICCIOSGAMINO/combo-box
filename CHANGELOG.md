@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 24-03-2023
+
+### Add
+	- Add the disabled feature
+
+### Changed
+	- update flags.js to v0.5.0 (viewBox fix)
+
 ## [0.3.0] - 23-03-2023
 
 ### Changed

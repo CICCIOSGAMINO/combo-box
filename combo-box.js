@@ -17,7 +17,8 @@ import {
     ISL,
     CAN,
     MTQ,
-    SWZ
+    SWZ,
+    XXX
 } from './flags.js'
 
 export class ComboBox extends LitElement {
@@ -37,6 +38,7 @@ export class ComboBox extends LitElement {
                 --combo-border: none;
                 --combo-bk-color: white;
                 --combo-list-max-height: 35rem;     max list with options height
+                --combo-list-width: 100%;           width of list with options
                 --combo-list-padding: .5rem;        padding list and options
                 --combo-option-col: 1fr 3fr;        grid columns layout option
                 --combo-option-height: 3.1rem;      set the flag height > width as consequence
@@ -101,7 +103,8 @@ export class ComboBox extends LitElement {
             .combobox-list {
                 box-sizing: border-box;
                 padding: var(--combo-list-padding, 1rem);
-                width: 100%;  /* with same of the combobox */
+                /* width: 100%;  /* with same of the combobox */
+                width: var(--combo-list-width, 100%);
                 max-height: var(--combo-list-max-height, 35rem);
                 display: none;
 
@@ -165,7 +168,8 @@ export class ComboBox extends LitElement {
                 state: true,
                 attribute: false
             },
-            selected: Number
+            selected: Number,
+            disabled: Boolean
         }
     }
 
@@ -173,6 +177,7 @@ export class ComboBox extends LitElement {
         super()
         this.open = false
         this.label = ''
+        this.disabled = false
         this.selected = 0
         this.searchString = ''
         this.searchTimeout = null
@@ -201,6 +206,13 @@ export class ComboBox extends LitElement {
     }
     
     updateMenuState (open, callFocus = true) {
+
+        // if disable do not open list with options
+        if (this.disabled) {
+            this.open = false
+            return
+        }
+
         if (this.open === open) return
 
         this.open = open
@@ -434,17 +446,20 @@ export class ComboBox extends LitElement {
 
     // render the item for the combobox
     comboboxTemplate () {
-        const option = this.options[this.selected]
+        const option = this.disabled ? undefined : this.options[this.selected]
 
         return option ?
             html`
                 <div class="combobox-content">
                     ${option.img}
                     
-                    <span>${option.name}</span>
+                    <!-- <span>${option.name}</span> -->
                 </div>
-            ` : null
-
+            ` : html`
+                <div class="combobox-content">
+                    ${XXX}
+                </div>
+            `
     }
 
     /**
